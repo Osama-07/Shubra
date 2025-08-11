@@ -10,7 +10,16 @@ class UserController
     //
     public function index()
     {
-        $users = User::all();
+        $users = User::with(['role' => function ($query) {
+            $query->select('id', 'name');
+        }])->get()->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role->name,
+            ];
+        });
 
         return response()->json([
             'data' => $users
@@ -19,8 +28,12 @@ class UserController
 
     public function show(User $user)
     {
+
         return response()->json([
-            'data' => $user
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role->name
         ], 200);
     }
 }

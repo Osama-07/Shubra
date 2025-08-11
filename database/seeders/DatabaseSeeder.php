@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\User;
+use App\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -15,21 +16,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Role::factory()->createMany([
+            [
+                'name' => 'admin'
+            ],
+            [
+                'name' => 'user'
+            ]
+        ]);
+
         User::factory()->createMany([
             [
                 'name' => 'admin',
                 'email' => 'admin@example.com',
                 'password' => Hash::make('123'),
-                'role' => 'admin'
+                'role_id' => 1
             ],
             [
                 'name' => 'user',
                 'email' => 'user@example.com',
                 'password' => Hash::make('123'),
-                'role' => 'user'
+                'role_id' => 2
             ]
         ]);
-
 
         Article::factory()->createMany([
             [
